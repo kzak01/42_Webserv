@@ -1,0 +1,8 @@
+**/a.out
+**.o
+**/test
+temp_files/*.tp
+temp_files/*.index
+client
+webserv
+**/__pycache__

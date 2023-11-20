@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Gallery</title>
+</head>
+<body>
+    <!-- <form id="upload-form" method="POST" enctype="multipart/form-data">
+        <input type="file" id="file-input" name="file">
+        <button type="button" onclick="startUpload()">Upload</button>
+    </form> -->
+    <button type="button" id="select-button">Select File</button>
+    <button type="button" id="upload-button">Upload file</button>
+    <div id="file-name"></div>
+    <!-- <div>
+        <input type="file" @change="handleFileChange" />
+        <button @click="handleUpload">upload</button>
+    </div> -->
+</body>
+<footer>
+    <div class="boocontainer">
+      <h2 class="ciao"> *_* </h2>
+    <img class="boo2" src="./../assets/aelurillus.jpg" alt="spider - Aelurillus v-Insignitus">
+    </div>
+</footer>
+<script>
+    document.getElementById('select-button').addEventListener('click', fileSelect);
+    document.getElementById('upload-button').addEventListener('click', fileUpload)
+    const   toloadFile = 0;
+
+    function fileSelect() {
+        // Create a file input element
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+
+        // Listen for the file selection
+        fileInput.addEventListener('change', function () 
+            {
+                const selectedFile = fileInput.files[0];
+
+                if (selectedFile) {
+                    toloadFile = selectedFile;
+                    document.getElementById('file-name').textContent = 'Selected File: ' + selectedFile.name;
+
+                }
+            });
+
+        // Trigger the file input dialog
+        fileInput.click();
+
+
+        
+    }
+    // function fileUpload() {
+    //     if (toloadFile) {
+    //         // Implement your file upload logic here, e.g., using the Fetch API or XMLHttpRequest
+    //         // You'll need to send the selected file to the server as part of a POST request.
+    //     } else {
+    //         alert('No file selected. Please select a file before uploading.');
+    //     }
+    // }
+
+//     export default {
+//   data: () => ({
+//     container: {
+//       file: null
+//     }
+//   }),
+//   methods: {
+//      handleFileChange(e) {
+//       const [file] = e.target.files;
+//       if (!file) return;
+//       Object.assign(this.$data, this.$options.data());
+//       this.container.file = file;
+//     },
+//     async handleUpload() {}
+//   }
+// };
+</script>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Gallery</title>
+</head>
+<body>
+    <button type="button" id="select-button">Select File</button>
+    <button type="button" id="upload-button">Upload file</button>
+    <div id="file-name" style="display: inline; color: black"></div>
+</body>
+<footer>
+    <div class="boocontainer">
+      <h2 class="ciao"> *_* </h2>
+    <img class="boo2" src="./../assets/aelurillus.jpg" alt="spider - Aelurillus v-Insignitus">
+    </div>
+</footer>
+<script>
+    let toloadFile = null; // Initialize to null
+
+    document.getElementById('select-button').addEventListener('click', fileSelect);
+    document.getElementById('upload-button').addEventListener('click', fileUpload);
+
+    function fileSelect() {
+        // Create a file input element
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+
+        // Listen for the file selection
+        fileInput.addEventListener('change', function () {
+            const selectedFile = fileInput.files[0];
+
+            if (selectedFile) {
+                toloadFile = selectedFile;
+                document.getElementById('file-name').textContent = 'Selected File: ' + selectedFile.name;
+            }
+        });
+
+        // Trigger the file input dialog
+        fileInput.click();
+    }
+
+//     function fileUpload() {
+//     if (toloadFile) {
+//         // Create a new FormData object
+//         const formData = new FormData();
+
+//         // Append an empty file input (with no file) to the FormData
+//         formData.append('file', new Blob([]), 'filename.txt');
+
+//         // Create the request headers, including the chunked transfer encoding header
+//         const headers = new Headers({
+//             'Transfer-Encoding': 'chunked',
+//         });
+
+//         // Create the fetch request with the FormData and headers
+//         fetch('/gallery', { // Change the URL to '/gallery'
+//             method: 'POST',
+//             body: formData,
+//             headers: headers,
+//         })
+//         .then(response => {
+//             // Handle the response from the server
+//             if (response.ok) {
+//                 alert('File uploaded successfully.');
+//             } else {
+//                 alert('File upload failed.');
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             alert('File upload failed.');
+//         });
+//     } else {
+//         alert('No file selected. Please select a file before uploading.');
+//     }
+// }
+
+// function fileUpload() {
+//     if (toloadFile) {
+//         const request = new Request('./gallery/', 
+//         {
+//             method: 'POST',
+//             headers: new Headers({
+//                 'Transfer-Encoding': 'chunked',
+//             }),
+//         });
+
+//         fetch(request)
+//         .then(response => {
+//             // Handle the response here
+//           })
+//           .catch(error => {
+//             // Handle errors here
+//           });
+
+//         }
+//     else {}
+// }
+
+function fileUpload() {
+    if (toloadFile) {
+        const file = toloadFile;
+        const chunkSize = 1024 * 1024; // Set your desired chunk size in bytes
+
+        const reader = file.stream().getReader();
+
+        const sendChunks = async () => {
+            let chunk;
+            const request = new Request('./gallery/', {
+                method: 'POST',
+                headers: new Headers({
+                    'Transfer-Encoding': 'chunked',
+                }),
+            });
+
+            // Open the fetch request
+            const response = await fetch(request);
+
+            // Start sending file data in chunks
+            while (!(chunk = await reader.read()).done) {
+                const chunkData = chunk.value;
+
+                // Send the chunk in a separate request with a new 'Transfer-Encoding: chunked' header
+                const chunkRequest = new Request('./gallery/', {
+                    method: 'POST',
+                    headers: new Headers({
+                        'Transfer-Encoding': 'chunked',
+                    }),
+                    body: chunkData,
+                });
+
+                await fetch(chunkRequest);
+            }
+
+            // Close the request when all chunks are sent
+            reader.releaseLock();
+        };
+
+        sendChunks()
+            .then(() => {
+                // Handle the response or any further actions
+            })
+            .catch(error => {
+                // Handle errors here
+            });
+    } else {
+        // Handle the case when there's no file to upload
+    }
+}
+
+</script>
+</html>

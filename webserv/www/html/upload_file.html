@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload a file</title>
+    <style>
+        body {
+            background-color: #add8e6; /* Colore azzurro per lo sfondo */
+            font-family: Arial, sans-serif; /* Imposta il tipo di carattere */
+            font-size: 1.25em; /* Aumenta la dimensione del testo */
+        }
+
+        h1 {
+            font-size: 2.5em; /* Rende il testo del titolo più grande */
+        }
+
+        form {
+            margin-top: 20px; /* Aggiunge spazio sopra al form */
+        }
+
+        input[type="submit"] {
+            margin-top: 10px; /* Aggiunge spazio sopra al pulsante di invio */
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload a file</h1>
+
+    <form action="./upload/" method="post" enctype="multipart/form-data">
+        Select the file you want to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="Upload File" name="submit">
+    </form>
+</body>
+</html>
